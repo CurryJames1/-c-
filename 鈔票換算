@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main() {
+
+    int faceF=0,faceT=0,faceW=0,faceO=0,count=0;
+    for (faceT=1;faceT<=10;faceT++){
+        for (faceF=1;faceF<=20;faceF++){
+            for (faceW=1;faceW<=40;faceW++){
+                for (faceO=1;faceO<=40;faceO++){
+                    if (100==faceF*5+faceT*10+faceW*2+faceO*1 &&  40==faceO+faceW+faceT+faceF){
+                        count += 1;
+                    }
+                }
+            }
+        }
+    }
+    printf("%d ",count);
+    return 0;
+}
