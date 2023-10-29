@@ -1,0 +1,140 @@
+//链表的建立与操作
+
+#include <stdio.h>
+#include <stdlib.h>
+//#include <stdint.h>
+
+typedef struct List{
+    int data;
+    //定义一个这个结构的指针，在这个定义中，不可以使用结构体指针，只能定义一个指向结构体的指针
+    struct  List *next;
+
+}Li,*pli;//定义一个单链表结构体,结构体别名于结构体指针
+
+//使用头插法构建链表
+void List_head_insert(pli &l){//这里传入的是链表头指针
+    l = (pli)malloc(sizeof(Li));//给头指针申请空间
+    l->next =NULL;
+    int x;
+    pli s;//代表是定义一个链表结构体指针
+    scanf("%d",&x);
+    while(x != 9999){
+        s = (pli)malloc(sizeof(Li));//为这个插入数据声请一个空间
+        s->data=x;
+        s->next = l->next;
+        l->next = s;
+        scanf("%d",&x);
+    }
+}
+
+void List_tail_insert(pli &l){
+    l = (pli)malloc(sizeof(Li));
+    l->next=NULL;
+
+    pli t = l;//尾插法中，必不可少的一步,让首尾指针指向同一个位置
+    t->next=NULL;
+    int x;
+
+    pli s ;//这个是结构体指针，直接指向一个这个结构体类型的空间
+    scanf("%d",&x);
+    while(x != 9999){
+        s = (pli) malloc(sizeof (Li));
+        s ->data = x;
+        s->next = NULL;
+        t->next =s;
+        t = s;
+        scanf("%d",&x);//勿忘重新读取一个数据
+    }
+    t->next = NULL;
+}
+
+pli search_element_bynum(pli l,int a) {
+    int i,data;
+    if (a >= 0) {
+        pli s=l;
+        for (i = 0; i < a; i++) {
+            s = s->next;
+        }
+        return s;
+    }else{
+        return NULL;
+    }
+}
+
+int search_element_bycont(pli l,int a){
+    pli s=l;
+    int i;
+    if (a>=0){
+        for (i = 0;i<a;i++){
+            if (s->data ==a) {
+                return i;
+            }else{
+                s = s->next;
+            }
+
+        }
+    }
+}
+
+
+bool delete_element_bynum(pli &l,int a){
+    pli p=l,q;
+    int i;
+    for (i = 0;i<a-1;i++){
+        p = p->next;
+    }
+    q = p->next;
+    p->next = q->next;
+    free(q);
+    return true;
+}
+
+bool delete_element_bycont(pli &l,int a){
+    pli p=l,q;
+    int flag =1;
+    while(flag){
+        if (p-> next == NULL && p-> data != a ){
+            return false;
+        }
+        while (p->data != a){
+            q= p;
+            p = p->next;
+        }
+        q->next = p->next;
+        free(p);
+        return true;
+
+    }
+}
+
+bool insert_element(pli &l,int b,int a){
+    pli s,q=l;
+    s = (pli) malloc(sizeof (Li));
+    int i;
+    s->data = a;
+    for(i=0;i<b;i++){
+        q=q->next;
+    }
+    s->next = q->next;
+    q->next = s;
+    return true;
+}
+
+
+
+
+void print_link(pli L){
+    while (L !=NULL){
+        L = L->next;
+        printf("%d",L->data);
+    }
+    if (L == NULL){
+        printf("%c"," ");
+    }
+}
+int main() {
+    pli linklist;
+    List_head_insert(linklist);
+    insert_element(linklist,2,3);
+    print_link(linklist);
+}
