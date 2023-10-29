@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+//#include <stdint.h>
+
+#define Maxsize  50
+typedef int elemtype;
+typedef struct stack{
+    elemtype content[Maxsize];
+    int toplink;
+}sta;
+
+void initialize_sta(sta &l){
+    l.toplink = -1;
+}
+bool is_empty(sta l){
+    if(-1==l.toplink){
+        return true;
+    }
+}
+bool sta_push(sta &l, elemtype a){
+    if (Maxsize -1 ==l.toplink){
+        return false;
+    }
+    l.toplink += 1;
+    l.content[l.toplink] = a;
+    return true;
+}
+elemtype check_topelem(sta s){
+    if (s.toplink!=-1){
+        return s.content[s.toplink];
+    }
+}
+elemtype sta_pop(sta &s){
+    if(s.toplink != -1){
+        elemtype a;
+        a = s.content[s.toplink];
+        s.toplink -= 1;
+        return a;
+    }
+}
+int main() {
+    sta s;
+    initialize_sta(s);
+    sta_push(s,0);
+    check_topelem(s);
+    sta_pop(s);
+}
