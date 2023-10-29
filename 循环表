@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+//#include <stdint.h>
+
+# define maxsize 4
+typedef int elemtype;
+typedef struct circle_que{
+    elemtype cont[maxsize];
+    int front,rear;
+}cirque;
+
+void initial_cq(cirque &l){
+    l.front = l.rear = 0;
+}
+
+bool cq_push(cirque &l,elemtype a){
+    if ((l.rear+1)%maxsize != l.front){
+        l.cont[l.rear % maxsize] = a;//需要插入的地方是前下标模运算的数
+        l.rear +=1;
+        return true;
+    } else{
+        return false;
+    }
+}
+elemtype cq_get(cirque &l){
+    if (l.rear!=l.front){
+        elemtype a = l.cont[l.front % maxsize];//需要取值的地方是前下标模运算的数
+        l.front += 1;
+        return a;
+    }
+}
+int main() {
+    cirque s;
+    initial_cq(s);
+    cq_push(s,0);
+    cq_push(s,1);
+    cq_push(s,2);
+    cq_get(s);
+}
