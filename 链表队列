@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+//#include <stdint.h>
+
+
+typedef int elemtype;
+typedef struct que{
+    elemtype content;
+    que *next;
+}qmember,*qm;
+typedef struct quelink{
+    que *front,*rear;
+}qlink;
+void initial_quelink(qlink &l){
+
+    l.rear = l.front  = (qm) malloc(sizeof (qmember));//链表头尾指针指向同一个空间
+    l.front->next = NULL;
+}
+bool enter_data(qlink &l,elemtype a){
+    qm s;
+    s = (qm) malloc(sizeof (qmember));//为插入数据申请一个空间
+    s->content = a;
+    s->next=NULL;
+    (l.rear)->next = s;
+    l.rear = s ;
+
+    return true;
+}
+bool isempty(qlink l){
+    if (l.rear == l.front){
+        return true  ;
+    }else{
+        return false;
+    }
+
+}
+elemtype out_data(qlink &l){
+    if (l.rear != l.front->next){
+        qmember s;
+        s.content = l.front->next->content;
+        l.front->next = l.front->next->next;
+        return s.content;
+    } else if (l.rear == l.front->next){//判断是否是链表中最后一个
+        qmember s;
+        s.content = l.front->next->content;
+        l.front->next = NULL;
+        l.rear =l.front;
+        return s.content;
+    }
+};
+
+int main() {
+    qlink l;
+    initial_quelink(l);
+    int i = isempty(l);
+    printf("%d l is empty\n",i);
+    enter_data(l,0);
+    enter_data(l,1);
+    i = isempty(l);
+    printf("%d l is empty\n",i);
+    out_data(l);
+    i = isempty(l);
+    printf("%d l is empty\n",i);
+    out_data(l);
+    i = isempty(l);
+    printf("%d l is empty\n",i);
+
+}
