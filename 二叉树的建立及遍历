@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+//#include <stdint.h>
+
+
+typedef char elemptype;
+typedef struct bi_tree{
+    elemptype cont;
+    bi_tree *lchild,*rchild;
+}Binote, *bitree;
+
+//定义一个结构体，用于构建辅助队列，不必单独再去构建一个辅助队列结构体
+typedef struct auxiliary_queue_member{
+    bitree p;//二叉树节点指针
+    //定义结构体指针，用与指向队列下一个，
+    struct auxiliary_queue_member *next;
+}queuemember,*qmem;
+void preorder(bitree l){
+    //深度优先
+    if(NULL != l){
+        printf("%c",l->cont);
+        preorder(l->lchild);
+        preorder(l->rchild);
+    }
+}
+void inorder(bitree l){
+    if(NULL != l){
+        inorder(l->lchild);
+        printf("%c",l->cont);
+        inorder(l->rchild);
+    }
+}
+void postorder(bitree l){
+    if(NULL != l){
+        postorder(l->lchild);
+        postorder(l->rchild);
+        printf("%c",l->cont);
+    }
+}
+
+void levelorder(bitree l){
+    qmem listhead=NULL ,listtail =NULL,listnew =NULL,pcur;
+    listnew = (qmem)calloc(1,sizeof (queuemember));
+    listhead =  (qmem)calloc(1,sizeof (queuemember));
+    listtail = listhead;
+    listnew->p = l;
+    listtail->next = listnew;
+    listtail = listnew;
+    while (listhead != listtail){
+        printf("%c",listhead->next->p->cont);
+        listhead = listhead->next;
+        if(listhead->p->lchild){
+            listnew = (qmem)calloc(1,sizeof (queuemember));
+            listnew->p = listhead->p->lchild;
+            listtail->next = listnew;
+            listtail = listnew;
+        }
+        if(listhead->p->rchild){
+            listnew = (qmem)calloc(1,sizeof (queuemember));
+            listnew->p = listhead->p->rchild;
+            listtail->next = listnew;
+            listtail = listnew;
+
+        }
+    }
+}
+
+int main() {
+    //定义一个树节点，用于存放新的树节点
+    bitree pnew;
+    elemptype c;
+    //定义一个根节点，表示一棵树
+    bitree tree = NULL;
+    //申请辅助队列成员
+    qmem listnew =NULL,listhead=NULL,listtail=NULL,pcur;
+    //循环读取缓存内容
+    while(scanf("%c",&c)){
+        if('\n' == c){
+            break;
+        }else{
+
+            //设置二叉树新结点
+            pnew = (bitree) calloc(1,sizeof (Binote));
+            pnew->cont = c;
+            //设置辅助队列新节点
+            listnew= (qmem) calloc(1,sizeof (queuemember));
+            listnew->p = pnew;
+
+            if (NULL == tree){
+                //插入第一个树节点
+                tree =pnew;
+                //队头和队尾指针都指向第一个节点
+                listhead = listnew;
+                listtail = listnew;
+                //当前节点指向队列第一个节点
+                pcur = listnew;
+            }else{
+                //元素入队
+                listtail->next = listnew;
+                listtail = listnew;
+                //节点插入
+                if(NULL == pcur->p->lchild){
+                    pcur->p->lchild = pnew;
+                }else if (NULL == pcur->p->rchild){
+                    pcur->p->rchild = pnew;
+                    pcur= pcur->next;
+                    listhead = pcur;
+                }
+            }
+
+        }
+        }
+    printf("\n------preorder----------\n");
+    preorder(tree);
+    printf("\n------inorder----------\n");
+    inorder(tree);
+    printf("\n------postorder----------\n");
+    postorder(tree);
+    printf("\n------levelorder----------\n");
+    levelorder(tree);
+    return 0;
+}
