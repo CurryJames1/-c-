@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int elemtpye;
+typedef struct sequential_list{
+    elemtpye *cont;
+    int listlen;
+}list,*plist;
+void initial_list(list &li){
+    li.cont = (elemtpye*) malloc(li.listlen*sizeof (elemtpye));
+    int i,s;
+    for (i=0;i<li.listlen;i++){
+        scanf("%d",&s) ;
+        li.cont[i] = s;
+    }
+}
+void print_list(list li){
+    int i;
+    for (i=0;i<li.listlen;i++){
+        printf("%d",li.cont[i]);
+    }
+}
+int sequential_find(list li,elemtpye elem){
+    int pos=0;
+    while (pos<li.listlen){
+        if (elem == li.cont[pos]){
+            return pos;
+        }
+        pos+=1;
+    }
+    return -1;
+}
+int main(){
+    list li;
+    elemtpye elem=4;
+    li.listlen =10;
+    initial_list(li);
+//    print_list(li);
+    printf("%d",sequential_find(li,elem));
+}
