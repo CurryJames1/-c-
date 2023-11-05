@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define maxsize 10
+typedef int elemtype;
+typedef struct sequential_list{
+    elemtype *elem;
+    int length;
+}list;
+int initial_list(list &li){
+    li.elem = (elemtype*) malloc(li.length*sizeof (elemtype));
+    li.length = 0;
+    int i =0,c;
+    while (scanf("%d",&c)){
+        if (9999 == c){
+            break;
+        }else{
+            li.elem[i] = c;
+            li.length++;
+            i++;
+        }
+    }
+    return 0;
+}
+int binary_find(list li,elemtype a){
+    int lower=0,highter = li.length -1 ,mid,time;
+    while(lower <= highter ){
+        mid = (highter+lower)/2;
+        if (li.elem[mid]>a){
+            highter = mid-1;//不可以直接等于mid不然会进入死循环
+            time++;
+            continue;
+        }
+        if (a == li.elem[mid]){
+            time++;
+            return mid;
+        }
+        if (li.elem[mid]<a){
+            lower = mid+1;//不可以直接等于mid不然会进入死循环
+            time++;
+            continue;
+        }
+    }
+    return -1;
+}
+
+int main(){
+    list li;
+    initial_list(li);
+    printf("the elem position is %d",binary_find(li,8));
+    return 0;
+}
