@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int elemtype;
+typedef struct binary_tree{
+    elemtype count;
+    binary_tree *lchild,*rchild;
+}btree,*pbtree;
+
+void initial_tree(pbtree &tree){
+    tree = (pbtree) malloc(sizeof (btree));
+    tree->rchild = tree->lchild =NULL;
+    scanf("%d",&tree->count);
+}
+void build_tree(pbtree &tree,pbtree &s,int a){
+    pbtree father=NULL, treenote;
+    treenote = tree;
+    s = (pbtree) calloc(1,sizeof (btree));
+    s->count = a;
+    while(treenote){
+        father = treenote;
+        if (s->count > treenote->count){
+            //如果插入元素大于当前元素，则往右寻找
+            treenote= treenote->rchild;
+
+        }
+        else if (s->count < treenote->count ){
+            //如果插入元素小于当前元素，则往左寻找
+            treenote= treenote->lchild;
+        }
+    }
+    if (s->count > father->count){
+        father->rchild = s;
+    }
+    if (s->count < father->count ){
+        father->lchild = s;
+    }
+}
+
+int main(){
+    pbtree tree,s;
+    initial_tree(tree);
+    int a;
+    while(scanf("%d",&a) ){//使用这个循环一定要在循环内进行判断，不然会进入死循环
+        if (9999 == a){
+            break;
+        }
+        build_tree(tree,s,a);
+    };
+    return 0;
+}
+
