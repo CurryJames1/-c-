@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int elem;
+typedef struct list{
+   elem *count;
+   int length;
+};
+void initial_list(list &li){
+    int i;
+    scanf("%d",&li.length);
+    //Apply for address space
+    li.count = (elem*) calloc(li.length,sizeof (elem));
+    for(i=0;i<li.length;i++){
+        //loop to read the content in buffer and fill it in list
+        scanf("%d",&li.count[i]);
+    }
+}
+void exchange_elem(int a,int b){
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+void bubble_sort(list &li){
+    int i,j;
+    bool flag;
+    for (i=0;i<li.length;i++){
+        flag = false;
+        for(j=li.length;j>i;j--){
+            if(li.count[j]<li.count[j-1]){
+                exchange_elem(li.count[j],li.count[j-1]);
+                flag = true;
+            }
+        }
+        if (false == flag){
+            return;
+        }
+    }
+}
+
+int main(){
+    list li;
+    int i;
+    initial_list(li);
+    bubble_sort(li);
+    for (i=0;i<li.length;i++){
+        printf("%d  ",li.count[i]);
+    }
+    return 0;
+}
