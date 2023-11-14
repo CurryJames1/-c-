@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int elem;
+typedef struct list{
+   elem *count;
+   int length;
+};
+void initial_list(list &li){
+    int i;
+    scanf("%d",&li.length);
+    //Apply for address space
+    li.count = (elem*) calloc(li.length,sizeof (elem));
+    for(i=0;i<li.length;i++){
+        //loop to read the content in buffer and fill it in list
+        scanf("%d",&li.count[i]);
+    }
+}
+void exchange_elem(int &a,int &b){
+    int temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+void bubble_sort(list &li){
+    //swap sort
+    int i,j;
+    bool flag;
+    for (i=0;i<li.length;i++){
+        flag = false;
+        for(j=li.length;j>i;j--){
+            if(li.count[j]<li.count[j-1]){
+                exchange_elem(li.count[j],li.count[j-1]);
+                flag = true;
+            }
+        }
+        if (false == flag){
+            return;
+        }
+    }
+}
+int pation(elem *A,int low,int high){
+    elem pivot ;
+    pivot = A[low];//set the first number of this list to judgment value
+    while(low<high){
+        while(low<high && A[high]>=pivot){
+            high--;//keep looking for the number smaller than the judgement value
+        }
+        A[low] = A[high];//swap numbers,use the high position number cover the number in low position
+        while(low<high && A[low]<=pivot){
+            low++;//keep looking for the number bigger than the judgment value
+        }
+        A[high] = A[low];//swap numbers,use the low position number cover the high position number
+    }
+    A[low] = pivot;
+   return low;
+}
+void quick_sort(elem *A,int low,int high){
+    //swap sort
+    if(low<high){
+        int portion_pos = pation(A,low,high);
+        //pay attention to the +1,the program will loop endlessly without this,
+        //because the number at this position have been sorted
+        quick_sort(A,portion_pos+1,high);
+        //pay attention to the -1,the program will loop endlessly without this
+        //because the number at this position have been sorted
+        quick_sort(A,low,portion_pos-1);
+    } else{ return;}
+
+}
+void insert_sort(elem *A,int n){
+    int i,j,interval;
+    for (i=1;i<n;i++){
+        interval = A[i];
+        for(j=i-1;j>=0&&A[j]>=interval;j--){
+            A[j+1]=A[j];
+        }
+        A[j+1] = interval;
+    }
+}
+void select_sort(elem *&A,int n){
+    int i , j ,min;
+    for (i=0;i<n-1;i++){
+        min = i;
+        for(j=i+1;j<n;j++){
+            if(A[j]<A[min]){
+                min = j;
+            }
+        }
+        if(min != i){
+            exchange_elem(A[i],A[min]);
+        }
+    }
+}
+
+int main(){
+    list li;
+    int i;
+    initial_list(li);
+    select_sort(li.count,li.length);
+    for (i=0;i<li.length;i++){
+        printf("%d  ",li.count[i]);
+    }
+    return 0;
+}
